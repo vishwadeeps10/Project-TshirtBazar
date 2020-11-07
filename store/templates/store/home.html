@@ -1,0 +1,101 @@
+{% extends "./base.html " %}
+{% include './popup.html' %}
+{% load tshirt_tags %}
+{% load filter_tags %}
+
+{% block content %}
+{% include './popup.html' %}
+<div class="container-fluid">
+    <div class="row m-1">
+      <div class="col-2 border rounded" style="background-color:#e3f2fd";>
+        <!--filter-->
+        <form id="filterForm" action="/">
+          <h4 class="mt-3">Filters</h4>
+          <hr>
+          <div>
+            <!--brands-->
+            <div class="form-group">
+              <label for="brand">Brand</label>
+              <select onchange="sumitForm()" class="form-control" name="brand" id="brands" style="background-color:#e3f2fd";>
+                <option value="">Select Brand</option>
+                {% for brand in brands %}
+  
+                <option
+                {% selected_attr request.GET.brand brand.slug%}
+                value="{{brand.slug}}">{{brand.title}}</option>
+                {%endfor%}
+              </select>
+            </div>
+            <!--Colors-->
+            <div class="form-group">
+              <label for="color">Colors</label>
+              <select onchange="sumitForm()"  class="form-control" name="color" id="color" style="background-color:#e3f2fd";>
+                <option value="">Select Color</option>
+                {% for color in colors %}
+  
+                <option
+                {% selected_attr request.GET.color color.slug%}
+                value="{{color.slug}}">{{color.title}}</option>
+                {%endfor%}
+              </select>
+            </div>
+            <!--sleeves-->
+            <div class="form-group">
+              <label for="sleeve">Sleeve</label>
+              <select onchange="sumitForm()"  class="form-control" name="sleeve" id="sleeve" style="background-color:#e3f2fd";>
+                <option value="">Select Sleeve</option>
+                {% for sleeve in sleeves %}
+  
+                <option {% selected_attr request.GET.sleeve sleeve.slug%} value="{{sleeve.slug}}">{{sleeve.title}}</option>
+                {%endfor%}
+              </select>
+            </div>
+            <hr>
+            <a href="/" class="btn btn-success btn-sm">Clear Filter</a>
+          </div>
+  
+        </form>
+      </div>
+      <div class="col border rounded " >
+        <div class="row">
+          
+        {% for tshirt in tshirts %}
+        <div class="col-4 mx-auto mt-2">
+            <div class="card h-100" style="width: 18rem;">
+                <img class="card-img-top"height=350px src="{{tshirt.image.url}}" alt="Card image cap">
+                <div class="card-body">
+                  <h6 class="card-title">{{tshirt|title}}</h6>
+                  <span> {% sale_price tshirt as sale_price_result%}</span>
+                    <b>{{sale_price_result|rupee}}</b>
+                  &nbsp;
+                  <span > {% min_price tshirt as result%}</span>
+                  <del class="text-danger">{{result|rupee}}</del>
+                  
+                  
+                  <span class="float-right badge badge-info">Save {{tshirt.discount}}%</span>
+                  
+                    
+
+                </div>
+
+                <div class="card-footer p-0 ">
+                    <a href="/product/{{tshirt.slug}}" class="btn btn-light btn-block"style="background-color:#e3f2fd">See More</a>
+
+                </div>
+              </div>
+            
+        </div>
+        
+        {% endfor %}
+        </div>
+        </div>
+      </div>
+</div>
+
+<script>
+  function sumitForm(){
+    document.getElementById('filterForm').submit()
+
+  }
+</script>
+{% endblock %}

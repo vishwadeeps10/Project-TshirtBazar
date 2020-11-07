@@ -1,0 +1,21 @@
+{% extends "./base.html" %}
+
+{% block content %} 
+{% load crispy_forms_tags %}
+<div class="col-lg-4 mx-auto border rounded p-3 mt-4"style="background-color:#e3f2fd ;">
+   <form action="/signup" method="post">
+    {% csrf_token %}
+    <h1 class="display-6 mt-3 " style="font-family: SemiCondensed;">Create Your Account</h1>
+    <div style="font-family: SemiCondensed;">
+      Already have account ? <a href="/login">Login</a>
+    </div>
+    <hr>
+    {{ form|crispy }}
+<div class="form-group">
+  <input type="Submit" value="Create an account" class="btn btn-info">
+</div>
+
+   </form>
+</div>
+
+{% endblock %}

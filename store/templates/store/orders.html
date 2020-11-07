@@ -1,0 +1,76 @@
+
+{% extends "./base.html" %}
+{% load tshirt_tags %}
+
+{% block content %} 
+
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>S.No.</th>
+                <th>Date</th>
+                <th>Items</th>
+                <th>Status</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for  order in orders %}
+            <tr>
+                <td>{{ forloop.counter}}</td>
+                <td>{{ order.date|date}}</td>
+                <td>
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>S.No.</th>
+                                <th>Image</th>
+                                <th>T-shirt</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>TOTAL</th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                                {% for oi in order.order_items_set.all %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td><img src="{{oi.tshirt.image.url}}" height = 60px alt=""></td>
+                                <td>{{oi.tshirt.name}}</td>
+                                <td>{{oi.price|rupee}}</td>
+                                <td>{{oi.quantity}}</td>
+                                <td>{% multiply oi.quantity oi.price as result%}{{result|rupee}}</td>
+
+                           
+                            </tr>
+
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </td>
+                <td>
+                    {% if order.order_status == 'COMPLETED' %}
+                    <span class="badge badge-success">{{order.order_status}}</span>
+
+                    {% elif order.order_status == 'PLACED' %}
+                    <span class="badge badge-warning">{{order.order_status}}</span>
+                    
+                    {% else %}
+                    <span class="badge badge-danger">{{order.order_status}}</span>
+
+                    {% endif%}
+
+                </td>
+
+            </tr>
+
+            {% endfor%}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

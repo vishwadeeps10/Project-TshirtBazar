@@ -1,0 +1,26 @@
+{% extends "./base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %} 
+<div class="container">
+    <div class="p-2">
+        <div class="display-5">
+            Checkout page
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-lg-7 mx-auto border rounded p-3"style="background-color:#e3f2fd ;">
+                <form action="/checkout" method="POST">
+                    {% csrf_token %}
+                    {{form|crispy}}
+                    <hr>
+                    <div class="form-group">
+                        <input type="submit" value="Checkout" class="btn btn-outline-success">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

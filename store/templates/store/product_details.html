@@ -1,0 +1,77 @@
+{% extends "./base.html" %}
+{% load tshirt_tags %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <!--display name and discriptions-->
+        <div class="col">
+          <!--images-->  
+        <div class="p-4 m-3">
+            <div class="text-center mx-auto">
+                <img src="{{tshirt.image.url}}" height="400px" width="300px" class="img-fluid" alt="">
+            </div>
+            </div>
+        </div>
+        <div class="col p-3 m-2">
+            <br>
+            <br>
+            <div class="">
+                <div class="display-4">
+                    {{tshirt.name}}
+                </div>
+                <hr>
+                <p>Discription : {{tshirt.description}}</p>
+            </div>
+
+            <div class="row ">
+                <!--For sizes-->
+                <div class="col">
+                    <label for="">Select Sizes</label>
+                    
+                    <div class="row">
+                        {% for size in tshirt.sizevariant_set.all %}
+                        <div class="col p-3" >
+                            <a href="/product/{{tshirt.slug}}?size={{size.size}}" class="btn
+                            
+                            {% if active_size.size == size.size %}
+                            btn-dark
+                             {% else %}
+                                btn-light
+                             {% endif%}
+                             border btn-block">
+                                {{size.size}}
+                            </a>
+                        </div>
+                        {% endfor%}
+                    </div>
+                <!--Show discount-->
+                    
+                    <br>
+                    <br>
+                    <div class="display-5 badge badge-info">
+                        
+                        save {{tshirt.discount}}%
+
+                    </div>
+                </div>
+                <!--Buttons-->
+                <div class="col border rouned mt-3">
+                    <div class="p-2">
+                        <div class="p-3">
+                            <span class="text-danger"><del>{{price|rupee}}</del></span>
+                            &nbsp;
+                            <span><b>{{sell_price|rupee}}</b></span>
+                            
+                        </div>
+                        <a href="/addtocart/{{tshirt.slug}}/{{active_size.size}}?return_url={{request.get_full_path}}" class="btn btn-outline-dark btn-block">Add to Cart</a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
